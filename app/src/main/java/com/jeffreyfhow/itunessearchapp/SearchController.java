@@ -12,13 +12,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivityController{
+public class SearchController {
 
     private MovieListModel model;
     private NetworkService networkService;
     private NetworkApi networkApi;
 
-    public MainActivityController(MovieListModel model){
+    public SearchController(MovieListModel model){
         networkService = new NetworkService();
         networkApi = networkService.getApi();
         this.model = model;
@@ -41,14 +41,14 @@ public class MainActivityController{
 
     private void retrieveMovieResults(ArrayList<Movie> movies){
 
-        Log.v("MainActivityController", "retrieveMovieResults() success");
+        Log.v("SearchController", "retrieveMovieResults() success");
         for(int i = 0; i < movies.size(); i++){
-            Log.v("MainActivityController", movies.get(i).toString());
+            Log.v("SearchController", movies.get(i).toString());
         }
         model.setMovies(movies);
     }
 
     private void retrieveMovieResultsError(Throwable t){
-        Log.v("MainActivityController", "JSON ERROR: " + t.getMessage());
+        Log.v("SearchController", "JSON ERROR: " + t.getMessage());
     }
 }

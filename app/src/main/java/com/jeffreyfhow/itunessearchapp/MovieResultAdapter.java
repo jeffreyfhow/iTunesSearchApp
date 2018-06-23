@@ -81,7 +81,7 @@ public class MovieResultAdapter
         this.favoriteMap.putAll(favoriteMap);
 
 //        for(int i = 0; i < this.movies.size(); i++){
-//            Log.v("MainActivityController", this.movies.get(i).toString());
+//            Log.v("SearchController", this.movies.get(i).toString());
 //        }
 
         notifyDataSetChanged();

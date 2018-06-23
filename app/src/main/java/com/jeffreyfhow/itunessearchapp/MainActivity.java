@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-
-
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+    private SearchScreen mSearchScreen;
+    private SearchController mSearchController;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -39,16 +39,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mTextMessage = findViewById(R.id.message);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         MovieListModel model = new MovieListModel();
 
-        MovieListScreen listScreen = new MovieListScreen(this, findViewById(R.id.mainContainer));
+        View mainContainer = findViewById(R.id.mainContainer);
+
+        mSearchScreen = new SearchScreen(mainContainer);
+        MovieListScreen listScreen = new MovieListScreen(mainContainer);
         model.registerObserver(listScreen);
 
-        MainActivityController mainActivityController = new MainActivityController(model);
-        mainActivityController.requestMovies("spider", 50);
+        mSearchController = new SearchController(model);
+    }
+
+    public void onSearchButtonClicked(View view) {
+        mSearchController.requestMovies(mSearchScreen.getSearchText(),50);
     }
 }

@@ -15,13 +15,12 @@ public class MovieListScreen implements MovieListModel.MovieListObserver{
 
     private final MovieResultAdapter adapter;
 
-    public MovieListScreen(Context context, View parent) {
+    public MovieListScreen(View parent) {
         recyclerView = parent.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(
             parent.getContext(), LinearLayoutManager.VERTICAL, false));
-        adapter = new MovieResultAdapter(context);
+        adapter = new MovieResultAdapter(parent.getContext());
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
