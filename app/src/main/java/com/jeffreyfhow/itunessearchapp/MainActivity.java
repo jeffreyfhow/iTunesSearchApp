@@ -43,7 +43,12 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        MainActivityController mainActivityController = new MainActivityController();
-        mainActivityController.requestMovies("captain+america", 10);
+        MovieListModel model = new MovieListModel();
+
+        MovieListScreen listScreen = new MovieListScreen(this, findViewById(R.id.mainContainer));
+        model.registerObserver(listScreen);
+
+        MainActivityController mainActivityController = new MainActivityController(model);
+        mainActivityController.requestMovies("spider", 50);
     }
 }

@@ -1,12 +1,14 @@
 package com.jeffreyfhow.itunessearchapp;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MovieListModel {
 
     interface MovieListObserver {
-        void onMovieListUpdate();
+        void onMovieListUpdate(ArrayList<Movie> movies, HashMap<String, Boolean> favoriteMap);
     }
 
     ArrayList<Movie> movies;
@@ -20,8 +22,11 @@ public class MovieListModel {
     }
 
     public void setMovies(ArrayList<Movie> movies){
-        movies.clear();
-        movies.addAll(movies);
+//        Log.v("MovieListModel", "setMovies() - " + movies.size());
+
+        this.movies.clear();
+        this.movies.addAll(movies);
+
         notifyObservers();
     }
 
@@ -52,8 +57,9 @@ public class MovieListModel {
     }
 
     public void notifyObservers(){
+//        Log.v("MovieListModel", "notifyingObservers()");
         for(int i = 0; i < observers.size(); i++){
-            observers.get(i).onMovieListUpdate();
+            observers.get(i).onMovieListUpdate(movies, favoriteMap);
         }
     }
 }

@@ -37,7 +37,7 @@ public class JsonDeserializerManager {
                             data.get("artistName").getAsString(),
                             DataUtility.getYearFromString(data.get("releaseDate").getAsString()),
                             data.get("longDescription").getAsString(),
-                            data.get("artworkUrl100").getAsString()
+                            data.get("artworkUrl100").getAsString().replace("100x100bb", "150x150bb")
                         ));
                     }
 
