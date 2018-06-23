@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,8 +39,13 @@ public class MovieResultAdapter
         }
     }
 
+    interface Listener {
+        void onClick(int position);
+    }
+
     private final ArrayList<Movie> movies;
     private final HashMap<String, Boolean> favoriteMap;
+    private Listener listener;
     private Context context;
 
     public MovieResultAdapter(Context context) {
@@ -57,7 +63,7 @@ public class MovieResultAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Movie currMovie = movies.get(position);
         holder.titleTextView.setText(currMovie.getTitle());
         holder.directorTextView.setText(currMovie.getDirector());
@@ -65,6 +71,15 @@ public class MovieResultAdapter
         holder.descriptionTextView.setText(currMovie.getDescription());
         URLImageLoader.getInstance().loadImage(
                 context, currMovie.getImageUrl(), holder.posterImageView);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener != null){
+                    listener.onClick(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -85,5 +100,14 @@ public class MovieResultAdapter
 //        }
 
         notifyDataSetChanged();
+    }
+
+    public void setListener(Listener listener){
+        this.listener = listener;
+    }
+
+    //TODO: find better place for this
+    public Movie getMovieAt(int index){
+        return this.movies.get(index);
     }
 }

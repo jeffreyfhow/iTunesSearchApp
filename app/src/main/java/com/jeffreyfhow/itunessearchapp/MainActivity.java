@@ -1,5 +1,6 @@
 package com.jeffreyfhow.itunessearchapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -20,14 +21,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_all:
                     mTextMessage.setText(R.string.title_home);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_favorite:
                     mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
             return false;
@@ -48,13 +46,33 @@ public class MainActivity extends AppCompatActivity {
         View mainContainer = findViewById(R.id.mainContainer);
 
         mSearchScreen = new SearchScreen(mainContainer);
-        MovieListScreen listScreen = new MovieListScreen(mainContainer);
+        MovieListScreen listScreen = new MovieListScreen(this, mainContainer);
+        listScreen.setRecyclerClickListener(new MovieResultAdapter.Listener() {
+            @Override
+            public void onClick(int position) {
+                Movie m = model.getMovieAt(position);
+                goToDetailActivity(m.getTitle(), m.getImageUrl(), m.getDescription());
+            }
+        });
+
         model.registerObserver(listScreen);
 
         mSearchController = new SearchController(model);
+
+
     }
 
     public void onSearchButtonClicked(View view) {
         mSearchController.requestMovies(mSearchScreen.getSearchText(),50);
     }
+
+    public void goToDetailActivity(String title, String posterUrl, String desc){
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_TITLE_ID, title);
+        intent.putExtra(DetailActivity.EXTRA_POSTER_ID, posterUrl);
+        intent.putExtra(DetailActivity.EXTRA_DESC_ID, desc);
+        startActivity(intent);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.jeffreyfhow.itunessearchapp;
 
-import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +16,10 @@ public class MovieListScreen implements MovieListModel.MovieListObserver{
 
     private final MovieResultAdapter adapter;
 
-    public MovieListScreen(View parent) {
+    private AppCompatActivity activity;
+
+    public MovieListScreen(AppCompatActivity activity, View parent) {
+        this.activity = activity;
         recyclerView = parent.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(
             parent.getContext(), LinearLayoutManager.VERTICAL, false));
@@ -27,5 +31,9 @@ public class MovieListScreen implements MovieListModel.MovieListObserver{
     public void onMovieListUpdate(ArrayList<Movie> movies, HashMap<String, Boolean> favoriteMap) {
         Log.v("MovieListScreen", "onMovieListUpdate()");
         adapter.updateData(movies, favoriteMap);
+    }
+
+    public void setRecyclerClickListener(MovieResultAdapter.Listener listener){
+        adapter.setListener(listener);
     }
 }

@@ -62,4 +62,8 @@ public class MovieListModel {
             observers.get(i).onMovieListUpdate(movies, favoriteMap);
         }
     }
+
+    public Movie getMovieAt(int index){
+        return movies.get(index);
+    }
 }
