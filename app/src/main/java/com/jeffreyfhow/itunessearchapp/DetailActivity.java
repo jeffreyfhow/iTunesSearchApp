@@ -30,6 +30,6 @@ public class DetailActivity extends AppCompatActivity {
         titleTextView.setText(title);
         descTextView.setText(desc);
 
-        URLImageLoader.getInstance().loadImage(this, poster, posterImageView);
+        URLImageLoader.getInstance().loadImage(this, poster.replace("150x150bb", "200x200bb"), posterImageView);
     }
 }
