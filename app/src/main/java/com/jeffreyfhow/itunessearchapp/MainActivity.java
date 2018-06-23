@@ -44,6 +44,6 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         MainActivityController mainActivityController = new MainActivityController();
-        mainActivityController.start();
+        mainActivityController.requestMovies("captain+america", 10);
     }
 }

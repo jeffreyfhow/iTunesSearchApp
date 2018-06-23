@@ -14,33 +14,36 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivityController {
 
-    public MainActivityController(){}
+    NetworkService networkService;
+    NetworkApi networkApi;
 
-    public void start(){
-        NetworkService networkService = new NetworkService();
-        NetworkApi networkApi = networkService.getApi();
+    public MainActivityController(){
+        networkService = new NetworkService();
+        networkApi = networkService.getApi();
+    }
+
+    public void requestMovies(String title, int limit){
 
         Observable<ArrayList<Movie>> movieObservable =
-                networkApi.fetchMovieResults("avengers", 10);
+            networkApi.fetchMovieResults(title, limit);
 
         Disposable subscription = movieObservable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                v -> {
-                    ArrayList<Movie> m = v;
-                    for(int i = 0; i < m.size(); i++){
-                        Log.v("MainActivityController", m.get(i).toString());
-                    }
-                    int i = 0;
-                },
-                e -> {
-                    Log.v("MainActivityController", "JSON ERROR: " + e.getMessage());
-                },
-                () -> {
-
-                }
+                v -> { retrieveMovieResults(v); },
+                e -> { retrieveMovieResultsError(e); }
             );
 
+    }
+
+    private void retrieveMovieResults(ArrayList<Movie> movies){
+        for(int i = 0; i < movies.size(); i++){
+            Log.v("MainActivityController", movies.get(i).toString());
+        }
+    }
+
+    private void retrieveMovieResultsError(Throwable t){
+        Log.v("MainActivityController", "JSON ERROR: " + t.getMessage());
     }
 }
